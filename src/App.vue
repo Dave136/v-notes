@@ -1,26 +1,83 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <h1 class="text-3xl font-bold underline">Hello world</h1>
-  <div>
-    <button class="p-4 bg-gray-300 rounded text-black mr-4" @click="counter.increment">Increment</button>
-    <button class="p-4 bg-gray-300 rounded text-black" @click="counter.decrement">Decrement</button>
-  </div>
-  <div class="p-8 bg-slate-50 max-w-xs m-auto mt-6 rounded">Count {{ counter.count }}</div>
+  <AppContainer>
+    <AppWrapper>
+      <TheHeader title="V-Notes App" />
+      <Message v-show="!taskStore.getTasks.length && !isCreatingTask" />
+      <TaskCreate v-show="isCreatingTask" v-model="isCreatingTask" />
+      <TaskUpdate v-show="isUpdatingTask" v-model="isUpdatingTask" :task="selectedTask" />
+      <TaskList>
+        <TaskItem v-for="task in taskStore.uncompletedTasks" :id="task.id" :key="task.id" :done="task.done"
+          :title="task.title" @dblclick="selectTask(task)" @remove="removeTask(task)" />
+      </TaskList>
+      <TaskCount v-show="taskStore.getTasks.length" :tasks="taskStore.completedTasks" />
+      <TaskList>
+        <TaskItem v-for="task in taskStore.completedTasks" :id="task.id" :key="task.id" :done="task.done"
+          :title="task.title" @dblclick="selectTask(task)" @remove="removeTask(task)" />
+      </TaskList>
+      <ActionButton @click="isCreatingTask = !isCreatingTask" />
+    </AppWrapper>
+  </AppContainer>
 </template>
 
 <script setup lang="ts">
-import { useCounterStore } from './store/useCounterStore';
+import { onMounted, onUnmounted, Ref, ref } from 'vue';
+import { Task, useTaskStore } from '@/store/useTaskStore';
+import useToast from '@/composables/useToast';
+import TheHeader from '@/components/common/TheHeader.vue';
+import TaskList from '@/components/Task/TaskList.vue';
+import TaskItem from '@/components/Task/TaskItem.vue';
+import TaskCount from '@/components/Task/TaskCount.vue';
+import TaskCreate from '@/components/Task/TaskCreate.vue';
+import AppContainer from '@/components/common/AppContainer.vue';
+import AppWrapper from '@/components/common/AppWrapper.vue';
+import ActionButton from '@/components/common/ActionButton.vue';
+import TaskUpdate from '@/components/Task/TaskUpdate.vue';
+import Message from '@/components/Message.vue';
 
-const counter = useCounterStore();
+const isCreatingTask = ref(false);
+const isUpdatingTask = ref(false);
+const selectedTask: Ref<Task> = ref({
+  id: '',
+  title: '',
+  done: false,
+  createdAt: '',
+  updatedAt: '',
+});
+const taskStore = useTaskStore();
+const { toast } = useToast();
+
+const shortcuts = (e: KeyboardEvent) => {
+  if (e.ctrlKey && e.key === 'Enter') {
+    isCreatingTask.value = !isCreatingTask.value;
+    isUpdatingTask.value = false;
+  }
+
+  if (e.ctrlKey && e.key === 'ArrowUp') {
+    console.log('keyup');
+  }
+
+  if (e.ctrlKey && e.key === 'ArrowDown') {
+    console.log('keydown');
+  }
+};
+
+const selectTask = (task: Task) => {
+  selectedTask.value = { ...task };
+  isUpdatingTask.value = true;
+
+  if (isCreatingTask.value) isCreatingTask.value = false;
+};
+
+const removeTask = (task: Task) => {
+  toast.value.success('Task deleted successfully');
+  taskStore.remove(task.id);
+};
+
+onMounted(() => {
+  window.addEventListener('keyup', shortcuts);
+});
+
+onUnmounted(() => {
+  window.addEventListener('keyup', shortcuts);
+});
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  background-color: #2c3e50;
-  min-height: 100vh;
-}
-</style>

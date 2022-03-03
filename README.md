@@ -1,11 +1,60 @@
-# Vue 3 + Typescript + Vite
+<p align="center">
+  <a href="https://vitejs.dev" target="#" rel="noopener noreferrer">
+    <img width="180" src="./docs/logo.svg" alt="V-Notes logo">
+  </a>
+</p>
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+# V-Notes
 
-## Recommended IDE Setup
+> Simple, minimalist and elegant todo app
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+V-Notes is a simple, minimalist, elegant and fast to-do app, built with modern tecnologies as:
 
-## Type Support For `.vue` Imports in TS
+- Vue 3 for UI (with script setup usign composition API)
+- Pinia for handler storage
+- TailwindCSS for styles
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+## Development
+
+### Requirements 🗒️
+
+- Nodejs
+- pnpm
+
+### Getting started 🛩️
+1. Clone this repository
+  
+```bash
+git clone https://github.com/Dave136/vnotes.git
+```
+
+2. Open a terminal, install project dependencies
+> **RECOMMENDED:** use PNPM to manage packages in this project.
+> you can install it using pnpm by running `npm install -g pnpm`
+
+```bash
+pnpm install
+```
+
+3. Run the server
+
+```bash
+pnpm run dev
+```
+The project must be available on [http://localhost:3000](http://localhost:3000)
+
+### Roadmap 🚧
+
+**Improvements:**
+- [ ] Quick actions with keyboards shortcuts
+- [ ] Better UI (Optional)
+
+**Features to add:**
+- [ ] Add actions to delete task group
+- [ ] Add support for complex notes (with markdown!)
+- [ ] Add support for save notes/task in a database (yes! With Sign in/ Sign up)
+
+## Contributing :muscle:
+Every kind of contribution to this project is totally welcome!
+
+You can open a Pull Request or Issue!
