@@ -2,13 +2,13 @@
   <Container>
     <Wrapper>
       <TheHeader title="V-Notes App" />
-      <Message v-show="!taskStore.tasks.length && !isCreatingTask" />
+      <Message v-show="!taskStore.getTasks.length && !isCreatingTask" />
       <TaskCreate v-show="isCreatingTask" v-model="isCreatingTask" />
       <TaskUpdate v-show="isUpdatingTask" v-model="isUpdatingTask" :task="selectedTask" />
       <TaskList>
         <TaskItem :tasks="taskStore.uncompletedTasks" @dblclick="selectTask" @remove="removeTask" />
       </TaskList>
-      <TaskCount :tasks="taskStore.completedTasks" v-show="taskStore.tasks.length" />
+      <TaskCount :tasks="taskStore.completedTasks" v-show="taskStore.getTasks.length" />
       <TaskList>
         <TaskItem :tasks="taskStore.completedTasks" @remove="removeTask" />
       </TaskList>
