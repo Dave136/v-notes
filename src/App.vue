@@ -1,26 +1,65 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <h1 class="text-3xl font-bold underline">Hello world</h1>
-  <div>
-    <button class="p-4 bg-gray-300 rounded text-black mr-4" @click="counter.increment">Increment</button>
-    <button class="p-4 bg-gray-300 rounded text-black" @click="counter.decrement">Decrement</button>
-  </div>
-  <div class="p-8 bg-slate-50 max-w-xs m-auto mt-6 rounded">Count {{ counter.count }}</div>
+  <Container>
+    <Wrapper>
+      <TheHeader title="V-Notes App" />
+      <TaskCreate v-show="isCreatingTask" v-model="isCreatingTask" />
+      <TaskUpdate v-show="isUpdatingTask" v-model="isUpdatingTask" :task="selectedTask" />
+      <TaskList>
+        <TaskItem :tasks="taskStore.uncompletedTasks" @dblclick="selectTask" @remove="removeTask" />
+      </TaskList>
+      <TaskCount :tasks="taskStore.completedTasks" />
+      <TaskList>
+        <TaskItem :tasks="taskStore.completedTasks" @remove="removeTask" />
+      </TaskList>
+      <Button @click="isCreatingTask = !isCreatingTask" />
+    </Wrapper>
+  </Container>
 </template>
 
 <script setup lang="ts">
-import { useCounterStore } from './store/useCounterStore';
+import { onMounted, onUnmounted, Ref, ref } from 'vue';
+import { Task, useTaskStore } from '@/store/useTaskStore';
+import TheHeader from '@/components/common/TheHeader.vue';
+import TaskList from '@/components/Task/TaskList.vue';
+import TaskItem from '@/components/Task/TaskItem.vue';
+import TaskCount from '@/components/Task/TaskCount.vue';
+import TaskCreate from '@/components/Task/TaskCreate.vue';
+import Container from '@/components/common/Container.vue';
+import Wrapper from '@/components/common/Wrapper.vue';
+import Button from '@/components/common/Button.vue';
+import TaskUpdate from '@/components/Task/TaskUpdate.vue';
 
-const counter = useCounterStore();
-</script>
+const isCreatingTask = ref(false);
+const isUpdatingTask = ref(false);
+const selectedTask: Ref<Task> = ref({
+  id: '',
+  title: '',
+  done: false,
+  createdAt: '',
+  updatedAt: '',
+});
+const taskStore = useTaskStore();
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  background-color: #2c3e50;
-  min-height: 100vh;
+const shortcuts = (e: KeyboardEvent) => {
+  if (e.ctrlKey && e.key === 'Enter') {
+    isCreatingTask.value = !isCreatingTask.value;
+  }
 }
-</style>
+
+const selectTask = (task: Task) => {
+  selectedTask.value = { ...task };
+  isUpdatingTask.value = true;
+}
+
+const removeTask = (task: Task) => {
+  taskStore.remove(task.id);
+}
+
+onMounted(() => {
+  window.addEventListener('keyup', shortcuts);
+});
+
+onUnmounted(() => {
+  window.addEventListener('keyup', shortcuts);
+})
+</script>
