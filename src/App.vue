@@ -47,12 +47,15 @@ const { toast } = useToast();
 const shortcuts = (e: KeyboardEvent) => {
   if (e.ctrlKey && e.key === 'Enter') {
     isCreatingTask.value = !isCreatingTask.value;
+    isUpdatingTask.value = false;
   }
 }
 
 const selectTask = (task: Task) => {
   selectedTask.value = { ...task };
   isUpdatingTask.value = true;
+
+  if (isCreatingTask.value) isCreatingTask.value = false;
 }
 
 const removeTask = (task: Task) => {
