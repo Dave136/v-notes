@@ -36,6 +36,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useTaskStore } from '@/store/useTaskStore';
+import useToast from '@/composables/useToast';
 
 type Props = {
   modelValue: boolean;
@@ -45,16 +46,22 @@ type Emits = {
   (e: 'update:modelValue', value: boolean): void;
 };
 
-const task = ref('');
-const taskStore = useTaskStore();
-
 const emits = defineEmits<Emits>();
 defineProps<Props>();
 
+const task = ref('');
+const taskStore = useTaskStore();
+const { toast } = useToast();
+
+
 const createTask = () => {
-  if (!task.value) return;
+  if (!task.value) {
+    toast.value.error('You cannot create an empty task!');
+    return;
+  };
 
   taskStore.add(task.value);
+  toast.value.success('Task created successfully');
   emits('update:modelValue', false);
   task.value = '';
 };
