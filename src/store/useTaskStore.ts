@@ -19,7 +19,9 @@ export const useTaskStore = defineStore('task', {
   }),
   getters: {
     getTasks(): Task[] {
-      return this.tasks.length ? this.tasks : storage.getStorage(storage.Keys.Task);
+      return this.tasks.length
+        ? this.tasks
+        : storage.getStorage(storage.Keys.Task);
     },
     completedTasks(): Task[] {
       return this.getTasks.filter((task) => task.done);
@@ -36,7 +38,7 @@ export const useTaskStore = defineStore('task', {
       const done = false;
       const newTask: Task = { title: task, id, createdAt, updatedAt, done };
       const taskStorage = this.getTasks;
-      
+
       taskStorage.push(newTask);
       storage.saveStorage(storage.Keys.Task, taskStorage);
       this.tasks = taskStorage;

@@ -1,20 +1,31 @@
 <template>
-  <Container>
-    <Wrapper>
+  <AppContainer>
+    <AppWrapper>
       <TheHeader title="V-Notes App" />
       <Message v-show="!taskStore.getTasks.length && !isCreatingTask" />
       <TaskCreate v-show="isCreatingTask" v-model="isCreatingTask" />
-      <TaskUpdate v-show="isUpdatingTask" v-model="isUpdatingTask" :task="selectedTask" />
+      <TaskUpdate
+        v-show="isUpdatingTask"
+        v-model="isUpdatingTask"
+        :task="selectedTask"
+      />
       <TaskList>
-        <TaskItem :tasks="taskStore.uncompletedTasks" @dblclick="selectTask" @remove="removeTask" />
+        <TaskItem
+          :tasks="taskStore.uncompletedTasks"
+          @dblclick="selectTask"
+          @remove="removeTask"
+        />
       </TaskList>
-      <TaskCount :tasks="taskStore.completedTasks" v-show="taskStore.getTasks.length" />
+      <TaskCount
+        v-show="taskStore.getTasks.length"
+        :tasks="taskStore.completedTasks"
+      />
       <TaskList>
         <TaskItem :tasks="taskStore.completedTasks" @remove="removeTask" />
       </TaskList>
       <ActionButton @click="isCreatingTask = !isCreatingTask" />
-    </Wrapper>
-  </Container>
+    </AppWrapper>
+  </AppContainer>
 </template>
 
 <script setup lang="ts">
@@ -26,8 +37,8 @@ import TaskList from '@/components/Task/TaskList.vue';
 import TaskItem from '@/components/Task/TaskItem.vue';
 import TaskCount from '@/components/Task/TaskCount.vue';
 import TaskCreate from '@/components/Task/TaskCreate.vue';
-import Container from '@/components/common/Container.vue';
-import Wrapper from '@/components/common/Wrapper.vue';
+import AppContainer from '@/components/common/AppContainer.vue';
+import AppWrapper from '@/components/common/AppWrapper.vue';
 import ActionButton from '@/components/common/ActionButton.vue';
 import TaskUpdate from '@/components/Task/TaskUpdate.vue';
 import Message from '@/components/Message.vue';
@@ -49,19 +60,19 @@ const shortcuts = (e: KeyboardEvent) => {
     isCreatingTask.value = !isCreatingTask.value;
     isUpdatingTask.value = false;
   }
-}
+};
 
 const selectTask = (task: Task) => {
   selectedTask.value = { ...task };
   isUpdatingTask.value = true;
 
   if (isCreatingTask.value) isCreatingTask.value = false;
-}
+};
 
 const removeTask = (task: Task) => {
   toast.value.success('Task deleted successfully');
   taskStore.remove(task.id);
-}
+};
 
 onMounted(() => {
   window.addEventListener('keyup', shortcuts);
@@ -69,5 +80,5 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.addEventListener('keyup', shortcuts);
-})
+});
 </script>

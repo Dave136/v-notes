@@ -3,10 +3,10 @@
     <div class="p-2">
       <div>
         <input
+          v-model="title"
           placeholder="Tap 'Enter' to create tasks"
           class="form-input outline-none border-none focus:ring-transparent bg-transparent rounded-md"
           type="text"
-          v-model="task.title"
           @keyup.enter="updateTask"
         />
       </div>
@@ -34,6 +34,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { Task, useTaskStore } from '@/store/useTaskStore';
 import useToast from '@/composables/useToast';
 
@@ -49,6 +50,7 @@ type Emits = {
 const emits = defineEmits<Emits>();
 const props = defineProps<Props>();
 
+const title = ref(props.task.title);
 const taskStore = useTaskStore();
 const { toast } = useToast();
 

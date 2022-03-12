@@ -9,7 +9,7 @@ import type { Task } from '@/store/useTaskStore';
 
 type Props = {
   tasks: Task[];
-}
+};
 
 defineProps<Props>();
 </script>

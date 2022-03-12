@@ -3,7 +3,9 @@
     <button
       class="w-16 h-16 text-4xl ml-2 bg-orange-500 hover:bg-orange-400 transition-all rounded-full"
       @click="$emit('click')"
-    >+</button>
+    >
+      +
+    </button>
   </section>
 </template>
 

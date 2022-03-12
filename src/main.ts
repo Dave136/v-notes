@@ -5,7 +5,4 @@ import App from './App.vue';
 import './index.scss';
 import 'vue-toast-notification/dist/theme-sugar.css';
 
-createApp(App)
-  .use(createPinia())
-  .use(VueToast)
-  .mount('#app');
+createApp(App).use(createPinia()).use(VueToast).mount('#app');

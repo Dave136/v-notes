@@ -8,7 +8,7 @@
 <script lang="ts" setup>
 type Props = {
   title: string;
-}
+};
 
 defineProps<Props>();
 </script>

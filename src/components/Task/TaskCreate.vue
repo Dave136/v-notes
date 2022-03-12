@@ -3,10 +3,10 @@
     <div class="p-2">
       <div>
         <input
+          v-model="task"
           placeholder="Tap 'Enter' to create tasks"
           class="form-input outline-none border-none focus:ring-transparent bg-transparent rounded-md"
           type="text"
-          v-model="task"
           @keyup.enter="createTask"
         />
       </div>
@@ -53,12 +53,11 @@ const task = ref('');
 const taskStore = useTaskStore();
 const { toast } = useToast();
 
-
 const createTask = () => {
   if (!task.value) {
     toast.value.error('You cannot create an empty task!');
     return;
-  };
+  }
 
   taskStore.add(task.value);
   toast.value.success('Task created successfully');
