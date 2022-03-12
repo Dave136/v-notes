@@ -12,7 +12,8 @@
     "lib": ["esnext", "dom"],
     "paths": {
       "@/*": ["./src/*", "./dist/*"]
-    }
+    },
+    "types": ["vitest/importMeta"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
