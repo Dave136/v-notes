@@ -35,9 +35,11 @@ export const useTaskStore = defineStore('task', {
       const updatedAt = new Date().toDateString();
       const done = false;
       const newTask: Task = { title: task, id, createdAt, updatedAt, done };
-
-      this.tasks.push(newTask);
-      storage.saveStorage(storage.Keys.Task, this.tasks);
+      const taskStorage = this.getTasks;
+      
+      taskStorage.push(newTask);
+      storage.saveStorage(storage.Keys.Task, taskStorage);
+      this.tasks = taskStorage;
     },
     update(id: string, title: string) {
       this.tasks = this.tasks.map((existentTask) =>
