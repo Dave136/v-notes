@@ -12,7 +12,7 @@
       <TaskList>
         <TaskItem :tasks="taskStore.completedTasks" @remove="removeTask" />
       </TaskList>
-      <Button @click="isCreatingTask = !isCreatingTask" />
+      <ActionButton @click="isCreatingTask = !isCreatingTask" />
     </Wrapper>
   </Container>
 </template>
@@ -28,7 +28,7 @@ import TaskCount from '@/components/Task/TaskCount.vue';
 import TaskCreate from '@/components/Task/TaskCreate.vue';
 import Container from '@/components/common/Container.vue';
 import Wrapper from '@/components/common/Wrapper.vue';
-import Button from '@/components/common/Button.vue';
+import ActionButton from '@/components/common/ActionButton.vue';
 import TaskUpdate from '@/components/Task/TaskUpdate.vue';
 import Message from '@/components/Message.vue';
 
