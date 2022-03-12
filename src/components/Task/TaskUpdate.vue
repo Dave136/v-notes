@@ -11,12 +11,22 @@
         />
       </div>
       <div class="mt-5 flex justify-end">
-        <button class="text-gray-400 mr-5" @click="$emit('update:modelValue', false)">Cancel</button>
+        <button
+          class="text-gray-400 mr-5"
+          @click="$emit('update:modelValue', false)"
+        >
+          Cancel
+        </button>
         <button
           class="text-orange-500 transition-all"
-          :class="{ 'text-gray-50': !task.title.length, 'hover:text-orange-400': task.title.length }"
+          :class="{
+            'text-gray-50': !task.title.length,
+            'hover:text-orange-400': task.title.length,
+          }"
           @click="updateTask"
-        >Done</button>
+        >
+          Done
+        </button>
       </div>
     </div>
   </section>
@@ -24,26 +34,31 @@
 
 <script lang="ts" setup>
 import { Task, useTaskStore } from '@/store/useTaskStore';
+import useToast from '@/composables/useToast';
 
 type Props = {
   modelValue: boolean;
   task: Task;
-}
+};
 
 type Emits = {
-  (e: 'update:modelValue', value: boolean): void
-}
-
-const taskStore = useTaskStore();
+  (e: 'update:modelValue', value: boolean): void;
+};
 
 const emits = defineEmits<Emits>();
 const props = defineProps<Props>();
 
+const taskStore = useTaskStore();
+const { toast } = useToast();
 
 const updateTask = () => {
-  if (!props.task.title) return;
+  if (!props.task.title) {
+    toast.value.error('Task title cannot be empty');
+    return;
+  }
 
   taskStore.update(props.task.id, props.task.title);
+  toast.value.success('Task updated successfully');
   emits('update:modelValue', false);
-}
+};
 </script>

@@ -15,6 +15,7 @@ specifiers:
   typescript: ^4.5.4
   vite: ^2.8.0
   vue: ^3.2.25
+  vue-toast-notification: ^3.0
   vue-tsc: ^0.29.8
 
 dependencies:
@@ -24,6 +25,7 @@ dependencies:
   pinia: 2.0.11_typescript@4.6.2+vue@3.2.31
   sass: 1.49.9
   vue: 3.2.31
+  vue-toast-notification: 3.0.0_vue@3.2.31
 
 devDependencies:
   '@tailwindcss/forms': 0.5.0_tailwindcss@3.0.23
@@ -1596,6 +1598,15 @@ packages:
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
+    dependencies:
+      vue: 3.2.31
+    dev: false
+
+  /vue-toast-notification/3.0.0_vue@3.2.31:
+    resolution: {integrity: sha512-qaC38T//mksVXzLRiK36LTypxouLMEnaQ1w8sLpiyJRFI6aVcVi3amGrz3hiODiYThy3v0F73ayQwwTtxSVF0A==}
+    engines: {node: '>=12.15.0'}
+    peerDependencies:
+      vue: ^3.0
     dependencies:
       vue: 3.2.31
     dev: false

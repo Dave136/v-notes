@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, Ref, ref } from 'vue';
 import { Task, useTaskStore } from '@/store/useTaskStore';
+import useToast from '@/composables/useToast';
 import TheHeader from '@/components/common/TheHeader.vue';
 import TaskList from '@/components/Task/TaskList.vue';
 import TaskItem from '@/components/Task/TaskItem.vue';
@@ -41,6 +42,7 @@ const selectedTask: Ref<Task> = ref({
   updatedAt: '',
 });
 const taskStore = useTaskStore();
+const { toast } = useToast();
 
 const shortcuts = (e: KeyboardEvent) => {
   if (e.ctrlKey && e.key === 'Enter') {
@@ -54,6 +56,7 @@ const selectTask = (task: Task) => {
 }
 
 const removeTask = (task: Task) => {
+  toast.value.success('Task deleted successfully');
   taskStore.remove(task.id);
 }
 
