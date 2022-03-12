@@ -2,7 +2,7 @@
   <li class="bg-zinc-800 my-3 p-5 rounded-md" v-for="task in tasks" :key="task.id">
     <div class="flex items-center" @dblclick="$emit('dblclick', task)">
       <input class="form-checkbox mr-5" type="checkbox" v-model="task.done" />
-      <h4 class="text-md font-bold" :class="{ 'line-through': task.done }">{{ task.title }}</h4>
+      <h4 class="text-md font-bold truncate" :class="{ 'line-through': task.done }">{{ task.title }}</h4>
       <div class="flex-grow flex justify-end">
         <button class="flex" @click="$emit('remove', task)">
           <Icon size="24">
