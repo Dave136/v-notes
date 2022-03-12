@@ -11,12 +11,23 @@
         />
       </div>
       <div class="mt-5 flex justify-end">
-        <button class="text-gray-400 mr-5" @click="$emit('update:modelValue', false)">Cancel</button>
         <button
-          class="text-orange-500 transition-all"
-          :class="{ 'text-gray-50': !task.length, 'hover:text-orange-400': task.length }"
+          class="text-gray-400 mr-5"
+          @click="$emit('update:modelValue', false)"
+        >
+          Cancel
+        </button>
+        <button
+          class="transition-all"
+          :class="{
+            'text-orange-400': task.length,
+            'text-gray-50': !task.length,
+            'hover:text-orange-400': task.length,
+          }"
           @click="createTask"
-        >Done</button>
+        >
+          Done
+        </button>
       </div>
     </div>
   </section>
@@ -28,11 +39,11 @@ import { useTaskStore } from '@/store/useTaskStore';
 
 type Props = {
   modelValue: boolean;
-}
+};
 
 type Emits = {
-  (e: 'update:modelValue', value: boolean): void
-}
+  (e: 'update:modelValue', value: boolean): void;
+};
 
 const task = ref('');
 const taskStore = useTaskStore();
@@ -40,12 +51,11 @@ const taskStore = useTaskStore();
 const emits = defineEmits<Emits>();
 defineProps<Props>();
 
-
 const createTask = () => {
   if (!task.value) return;
 
   taskStore.add(task.value);
   emits('update:modelValue', false);
   task.value = '';
-}
+};
 </script>
