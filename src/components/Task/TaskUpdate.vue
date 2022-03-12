@@ -18,10 +18,11 @@
           Cancel
         </button>
         <button
-          class="text-orange-500 transition-all"
+          class="transition-all"
           :class="{
+            'text-orange-400': task.title.length,
             'text-gray-50': !task.title.length,
-            'hover:text-orange-400': task.title.length,
+            'hover:text-orange-500': task.title.length,
           }"
           @click="updateTask"
         >
