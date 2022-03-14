@@ -43,6 +43,17 @@ pnpm run dev
 ```
 The project must be available on [http://localhost:3000](http://localhost:3000)
 
+### Roadmap 🚧
+
+**Improvements:**
+- [ ] Quick actions with keyboards shortcuts
+- [ ] Better UI (Optional)
+
+**Features to add:**
+- [ ] Add actions to delete task group
+- [ ] Add support for complex notes (with markdown!)
+- [ ] Add support for save notes/task in a database (yes! With Sign in/ Sign up)
+
 ## Contributing :muscle:
 Every kind of contribution to this project is totally welcome!
 
