@@ -49,9 +49,9 @@ export const useTaskStore = defineStore('task', {
       );
       storage.saveStorage(storage.Keys.Task, this.tasks);
     },
-    done(id: string) {
+    toggleDone(id: string) {
       this.tasks = this.tasks.map((task) =>
-        task.id === id ? { ...task, id } : task,
+        task.id === id ? { ...task, done: !task.done } : task,
       );
       storage.saveStorage(storage.Keys.Task, this.tasks);
     },
