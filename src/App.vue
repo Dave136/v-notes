@@ -11,18 +11,22 @@
       />
       <TaskList>
         <TaskItem
-          :tasks="taskStore.uncompletedTasks"
-          @dblclick="selectTask"
-          @remove="removeTask"
+          v-for="task in taskStore.uncompletedTasks"
+          :id="task.id"
+          :key="task.id"
+          :done="task.done"
+          :title="task.title"
+          @dblclick="selectTask(task)"
+          @remove="removeTask(task)"
         />
       </TaskList>
       <TaskCount
         v-show="taskStore.getTasks.length"
         :tasks="taskStore.completedTasks"
       />
-      <TaskList>
+      <!-- <TaskList>
         <TaskItem :tasks="taskStore.completedTasks" @remove="removeTask" />
-      </TaskList>
+      </TaskList> -->
       <ActionButton @click="isCreatingTask = !isCreatingTask" />
     </AppWrapper>
   </AppContainer>
