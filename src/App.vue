@@ -60,6 +60,14 @@ const shortcuts = (e: KeyboardEvent) => {
     isCreatingTask.value = !isCreatingTask.value;
     isUpdatingTask.value = false;
   }
+
+  if (e.ctrlKey && e.key === 'ArrowUp') {
+    console.log('keyup');
+  }
+
+  if (e.ctrlKey && e.key === 'ArrowDown') {
+    console.log('keydown');
+  }
 };
 
 const selectTask = (task: Task) => {
