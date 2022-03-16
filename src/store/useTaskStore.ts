@@ -49,9 +49,9 @@ export const useTaskStore = defineStore('task', {
       );
       storage.saveStorage(storage.Keys.Task, this.tasks);
     },
-    done(id: string) {
+    toggleDone(id: string, done: boolean) {
       this.tasks = this.tasks.map((task) =>
-        task.id === id ? { ...task, id } : task,
+        task.id === id ? { ...task, done } : task,
       );
       storage.saveStorage(storage.Keys.Task, this.tasks);
     },
@@ -59,8 +59,8 @@ export const useTaskStore = defineStore('task', {
       this.tasks = this.tasks.filter((task) => task.id !== id);
       storage.saveStorage(storage.Keys.Task, this.tasks);
     },
-    getTaskById(id: string) {
-      return this.tasks.filter((task) => task.id === id);
+    getTaskById(id: string): Task {
+      return this.tasks.filter((task) => task.id === id)[0];
     },
   },
 });

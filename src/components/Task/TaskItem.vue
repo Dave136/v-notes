@@ -1,19 +1,17 @@
 <template>
-  <li
-    v-for="task in tasks"
-    :key="task.id"
-    class="bg-zinc-800 my-3 p-5 rounded-md"
-  >
-    <div class="flex items-center" @dblclick="$emit('dblclick', task)">
-      <input v-model="task.done" class="form-checkbox mr-5" type="checkbox" />
-      <h4
-        class="text-md font-bold truncate"
-        :class="{ 'line-through': task.done }"
-      >
-        {{ task.title }}
+  <li class="bg-zinc-800 my-3 p-5 rounded-md">
+    <div class="flex items-center" @dblclick="$emit('dblclick')">
+      <input
+        :checked="done"
+        class="form-checkbox mr-5"
+        type="checkbox"
+        @change="toggleDone()"
+      />
+      <h4 class="text-md font-bold truncate" :class="{ 'line-through': done }">
+        {{ title }}
       </h4>
       <div class="flex-grow flex justify-end">
-        <button class="flex" @click="$emit('remove', task)">
+        <button class="flex" @click="$emit('remove')">
           <Icon size="24">
             <Trash
               class="text-red-500 hover:text-red-800 transition ease-linear duration-200"
@@ -28,17 +26,33 @@
 <script lang="ts" setup>
 import Trash from '@vicons/ionicons5/Trash';
 import { Icon } from '@vicons/utils';
-import type { Task } from '@/store/useTaskStore';
+import { useTaskStore } from '@/store/useTaskStore';
+import useToast from '@/composables/useToast';
 
 type Props = {
-  tasks: Task[];
+  id: string;
+  title: string;
+  done: boolean;
 };
 
 type Emits = {
-  (e: 'dblclick', task: Task): void;
-  (e: 'remove', task: Task): void;
+  (e: 'dblclick'): void;
+  (e: 'remove'): void;
+  (e: 'update:done', value: boolean): void;
 };
 
-defineProps<Props>();
 defineEmits<Emits>();
+const props = defineProps<Props>();
+
+const taskStore = useTaskStore();
+const { toast } = useToast();
+
+const toggleDone = () => {
+  taskStore.toggleDone(props.id, !props.done);
+  console.log(!props.done);
+
+  toast.value.default(
+    `Task ${props.title} ${!props.done ? 'completed!' : 'uncompleted'}`,
+  );
+};
 </script>
