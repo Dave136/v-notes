@@ -11,7 +11,7 @@
 V-Notes is a simple, minimalist, elegant and fast to-do app, built with modern tecnologies as:
 
 - Vue 3 for UI (with script setup usign composition API)
-- Pinia for handler storage
+- Pinia for handle state
 - TailwindCSS for styles
 
 ## Development
@@ -41,7 +41,7 @@ pnpm install
 ```bash
 pnpm run dev
 ```
-The project must be available on [http://localhost:3000](http://localhost:3000)
+The project must be available on [http://localhost:5173](http://localhost:5173)
 
 ### Roadmap 🚧
 

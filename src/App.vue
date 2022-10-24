@@ -1,7 +1,7 @@
 <template>
   <AppContainer>
     <AppWrapper>
-      <TheHeader title="V-Notes App" />
+      <!-- <TheHeader title="" /> -->
       <Message v-show="!taskStore.getTasks.length && !isCreatingTask" />
       <TaskCreate v-show="isCreatingTask" v-model="isCreatingTask" />
       <TaskUpdate v-show="isUpdatingTask" v-model="isUpdatingTask" :task="selectedTask" />
