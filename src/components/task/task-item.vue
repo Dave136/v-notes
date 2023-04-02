@@ -1,15 +1,18 @@
 <template>
   <li class="bg-zinc-800 my-3 p-5 rounded-md">
     <div class="flex items-center" @dblclick="$emit('dblclick')">
-      <input :checked="done" class="form-checkbox mr-5" type="checkbox" @change="toggleDone" />
+      <input
+        :checked="done"
+        class="form-checkbox mr-5"
+        type="checkbox"
+        @change="toggleDone"
+      />
       <h4 class="text-md font-bold truncate" :class="{ 'line-through': done }">
         {{ title }}
       </h4>
       <div class="flex-grow flex justify-end">
         <button class="flex" @click="$emit('remove')">
-          <Icon size="24">
-            <Trash class="text-red-500 hover:text-red-800 transition ease-linear duration-200" />
-          </Icon>
+          <ph-trash-simple :size="24" color="#ffffff" weight="thin" />
         </button>
       </div>
     </div>
@@ -17,10 +20,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useTaskStore } from '@/store/useTaskStore';
-import Trash from '@vicons/ionicons5/Trash';
-import { Icon } from '@vicons/utils';
-import useToast from '@/composables/useToast';
+import { useTaskStore } from '@/store/task';
+import { PhTrashSimple } from '@phosphor-icons/vue';
+import useToast from '@/composables/use-toast';
 
 type Props = {
   id: string;
@@ -43,7 +45,7 @@ const { toast } = useToast();
 const toggleDone = () => {
   taskStore.toggleDone(props.id);
 
-  toast.value.default(
+  toast?.value?.default(
     `Task ${props.title} ${!props.done ? 'completed!' : 'uncompleted'}`,
   );
 };

@@ -2,7 +2,7 @@ import { getCurrentInstance, onMounted, Ref, ref } from 'vue';
 import type { ToastPluginApi } from 'vue-toast-notification';
 
 export default function useToast() {
-  const toast = ref() as Ref<ToastPluginApi>;
+  const toast = ref() as Ref<ToastPluginApi | undefined>;
 
   onMounted(() => {
     const app = getCurrentInstance();

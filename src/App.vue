@@ -1,38 +1,59 @@
 <template>
-  <AppContainer>
-    <AppWrapper>
+  <app-container>
+    <app-wrapper>
       <!-- <TheHeader title="" /> -->
-      <Message v-show="!taskStore.getTasks.length && !isCreatingTask" />
-      <TaskCreate v-show="isCreatingTask" v-model="isCreatingTask" />
-      <TaskUpdate v-show="isUpdatingTask" v-model="isUpdatingTask" :task="selectedTask" />
-      <TaskList>
-        <TaskItem v-for="task in taskStore.uncompletedTasks" :id="task.id" :key="task.id" :done="task.done"
-          :title="task.title" @dblclick="selectTask(task)" @remove="removeTask(task)" />
-      </TaskList>
-      <TaskCount v-show="taskStore.getTasks.length" :tasks="taskStore.completedTasks" />
-      <TaskList>
-        <TaskItem v-for="task in taskStore.completedTasks" :id="task.id" :key="task.id" :done="task.done"
-          :title="task.title" @dblclick="selectTask(task)" @remove="removeTask(task)" />
-      </TaskList>
-      <ActionButton @click="isCreatingTask = !isCreatingTask" />
-    </AppWrapper>
-  </AppContainer>
+      <message v-show="!taskStore.tasks.length && !isCreatingTask" />
+      <task-create v-show="isCreatingTask" v-model="isCreatingTask" />
+      <task-update
+        v-show="isUpdatingTask"
+        v-model="isUpdatingTask"
+        :task="selectedTask"
+      />
+      <task-list>
+        <task-item
+          v-for="task in taskStore.uncompletedTasks"
+          :id="task.id"
+          :key="task.id"
+          :done="task.done"
+          :title="task.title"
+          @dblclick="selectTask(task)"
+          @remove="removeTask(task)"
+        />
+      </task-list>
+      <task-count
+        v-show="taskStore.completedTasks.length"
+        :tasks="taskStore.completedTasks"
+      />
+      <task-list>
+        <task-item
+          v-for="task in taskStore.completedTasks"
+          :id="task.id"
+          :key="task.id"
+          :done="task.done"
+          :title="task.title"
+          @dblclick="selectTask(task)"
+          @remove="removeTask(task)"
+        />
+      </task-list>
+      <action-button @click="isCreatingTask = !isCreatingTask" />
+    </app-wrapper>
+  </app-container>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, Ref, ref } from 'vue';
-import { Task, useTaskStore } from '@/store/useTaskStore';
-import useToast from '@/composables/useToast';
-import TheHeader from '@/components/common/TheHeader.vue';
-import TaskList from '@/components/Task/TaskList.vue';
-import TaskItem from '@/components/Task/TaskItem.vue';
-import TaskCount from '@/components/Task/TaskCount.vue';
-import TaskCreate from '@/components/Task/TaskCreate.vue';
-import AppContainer from '@/components/common/AppContainer.vue';
-import AppWrapper from '@/components/common/AppWrapper.vue';
-import ActionButton from '@/components/common/ActionButton.vue';
-import TaskUpdate from '@/components/Task/TaskUpdate.vue';
-import Message from '@/components/Message.vue';
+import { Task, useTaskStore } from '@/store/task';
+import useToast from '@/composables/use-toast';
+// import TheHeader from '@/components/common/TheHeader.vue';
+import TaskList from '@/components/task/task-list.vue';
+import TaskItem from '@/components/task/task-item.vue';
+import TaskCount from '@/components/task/task-count.vue';
+import TaskCreate from '@/components/task/task-create.vue';
+import AppContainer from '@/components/common/app-container.vue';
+import AppWrapper from '@/components/common/app-wrapper.vue';
+import ActionButton from '@/components/common/action-button.vue';
+import TaskUpdate from '@/components/task/task-update.vue';
+import Message from '@/components/app-message.vue';
 
 const isCreatingTask = ref(false);
 const isUpdatingTask = ref(false);
@@ -69,7 +90,7 @@ const selectTask = (task: Task) => {
 };
 
 const removeTask = (task: Task) => {
-  toast.value.success('Task deleted successfully');
+  toast.value?.success('Task deleted successfully');
   taskStore.remove(task.id);
 };
 
@@ -81,3 +102,16 @@ onUnmounted(() => {
   window.addEventListener('keyup', shortcuts);
 });
 </script>
+
+<style>
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

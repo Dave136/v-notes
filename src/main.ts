@@ -1,8 +1,9 @@
 import { createApp } from 'vue';
-import { createPinia } from 'pinia';
 import VueToast from 'vue-toast-notification';
 import App from './App.vue';
-import './index.scss';
+import './index.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 
-createApp(App).use(createPinia()).use(VueToast).mount('#app');
+import pinia from './plugins/pinia';
+
+createApp(App).use(pinia).use(VueToast).mount('#app');
