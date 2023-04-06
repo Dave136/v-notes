@@ -10,11 +10,13 @@ export interface Task {
 
 export interface TaskStore {
   tasks: Task[];
+  isCreatingTask: boolean;
 }
 
 export const useTaskStore = defineStore('task', {
   state: (): TaskStore => ({
     tasks: [],
+    isCreatingTask: false,
   }),
   getters: {
     completedTasks(): Task[] {

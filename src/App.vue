@@ -1,106 +1,90 @@
 <template>
   <app-container>
     <app-wrapper>
-      <!-- <TheHeader title="" /> -->
-      <message v-show="!taskStore.tasks.length && !isCreatingTask" />
-      <task-create v-show="isCreatingTask" v-model="isCreatingTask" />
-      <task-update
-        v-show="isUpdatingTask"
-        v-model="isUpdatingTask"
-        :task="selectedTask"
-      />
-      <task-list>
-        <task-item
-          v-for="task in taskStore.uncompletedTasks"
-          :id="task.id"
-          :key="task.id"
-          :done="task.done"
-          :title="task.title"
-          @dblclick="selectTask(task)"
-          @remove="removeTask(task)"
-        />
-      </task-list>
-      <task-count
-        v-show="taskStore.completedTasks.length"
-        :tasks="taskStore.completedTasks"
-      />
-      <task-list>
-        <task-item
-          v-for="task in taskStore.completedTasks"
-          :id="task.id"
-          :key="task.id"
-          :done="task.done"
-          :title="task.title"
-          @dblclick="selectTask(task)"
-          @remove="removeTask(task)"
-        />
-      </task-list>
-      <action-button @click="isCreatingTask = !isCreatingTask" />
+      <nav class="flex gap-12 items-center justify-center">
+        <router-link to="/">
+          <ph-book
+            :size="42"
+            :color="iconStyle('/').color"
+            :weight="iconStyle('/').weight"
+          />
+        </router-link>
+        <router-link to="/tasks">
+          <ph-check-square
+            :size="42"
+            :color="iconStyle('/tasks').color"
+            :weight="iconStyle('/tasks').weight"
+          />
+        </router-link>
+      </nav>
+      <router-view />
+      <action-button v-show="appStore.showBtn" @click="handleClick" />
     </app-wrapper>
   </app-container>
 </template>
 
-<script setup lang="ts">
-import { onMounted, onUnmounted, Ref, ref } from 'vue';
-import { Task, useTaskStore } from '@/store/task';
-import useToast from '@/composables/use-toast';
-// import TheHeader from '@/components/common/TheHeader.vue';
-import TaskList from '@/components/task/task-list.vue';
-import TaskItem from '@/components/task/task-item.vue';
-import TaskCount from '@/components/task/task-count.vue';
-import TaskCreate from '@/components/task/task-create.vue';
+<script lang="ts" setup>
+import { PhBook, PhCheckSquare } from '@phosphor-icons/vue';
+import { useRoute } from 'vue-router';
 import AppContainer from '@/components/common/app-container.vue';
 import AppWrapper from '@/components/common/app-wrapper.vue';
 import ActionButton from '@/components/common/action-button.vue';
-import TaskUpdate from '@/components/task/task-update.vue';
-import Message from '@/components/app-message.vue';
+import { useTaskStore, useAppStore, useNotesStore } from '@/store';
+import { watch } from 'vue';
+import { storeToRefs } from 'pinia';
 
-const isCreatingTask = ref(false);
-const isUpdatingTask = ref(false);
-const selectedTask: Ref<Task> = ref({
-  id: '',
-  title: '',
-  done: false,
-  createdAt: '',
-  updatedAt: '',
-});
+const route = useRoute();
 const taskStore = useTaskStore();
-const { toast } = useToast();
+const appStore = useAppStore();
+const notesStore = useNotesStore();
 
-const shortcuts = (e: KeyboardEvent) => {
-  if (e.ctrlKey && e.key === 'Enter') {
-    isCreatingTask.value = !isCreatingTask.value;
-    isUpdatingTask.value = false;
-  }
+interface IconStyle {
+  color: string;
+  weight:
+    | 'fill'
+    | 'bold'
+    | 'thin'
+    | 'light'
+    | 'regular'
+    | 'duotone'
+    | undefined;
+}
 
-  if (e.ctrlKey && e.key === 'ArrowUp') {
-    console.log('keyup');
-  }
+const { isCreating, isEditing } = storeToRefs(notesStore);
+const { isCreatingTask } = storeToRefs(taskStore);
 
-  if (e.ctrlKey && e.key === 'ArrowDown') {
-    console.log('keydown');
-  }
-};
-
-const selectTask = (task: Task) => {
-  selectedTask.value = { ...task };
-  isUpdatingTask.value = true;
-
-  if (isCreatingTask.value) isCreatingTask.value = false;
-};
-
-const removeTask = (task: Task) => {
-  toast.value?.success('Task deleted successfully');
-  taskStore.remove(task.id);
-};
-
-onMounted(() => {
-  window.addEventListener('keyup', shortcuts);
+const iconStyle = (path: string): IconStyle => ({
+  color: route.path === path ? '#fb923c' : '#f2f2f2',
+  weight: route.path === path ? 'fill' : 'thin',
 });
 
-onUnmounted(() => {
-  window.addEventListener('keyup', shortcuts);
-});
+const showFloatingBtn = () => {
+  if (
+    taskStore.isCreatingTask ||
+    notesStore.isCreating ||
+    notesStore.isEditing
+  ) {
+    appStore.showBtn = false;
+    return;
+  }
+
+  appStore.showBtn = true;
+};
+
+const handleClick = () => {
+  const isHomePath = route.path === '/';
+
+  if (!isHomePath) {
+    taskStore.isCreatingTask = !taskStore.isCreatingTask;
+    showFloatingBtn();
+    return;
+  }
+
+  notesStore.isCreating = !notesStore.isCreating;
+  showFloatingBtn();
+};
+
+watch([isCreating, isEditing, isCreatingTask], showFloatingBtn);
 </script>
 
 <style>

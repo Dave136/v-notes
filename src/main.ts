@@ -5,5 +5,6 @@ import './index.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 
 import pinia from './plugins/pinia';
+import router from './router';
 
-createApp(App).use(pinia).use(VueToast).mount('#app');
+createApp(App).use(router).use(pinia).use(VueToast).mount('#app');
