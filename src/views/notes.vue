@@ -1,6 +1,6 @@
 <template>
   <section class="mt-8">
-    <!-- <notes-category /> -->
+    <notes-category />
     <notes-create v-show="notesStore.isCreating" />
     <notes-update
       v-if="notesStore.isEditing && noteUpdate?.id"
@@ -24,7 +24,7 @@ import { useNotesStore, type Note } from '@/store';
 import NotesCreate from '../components/notes/notes-create.vue';
 import NotesUpdate from '../components/notes/notes-update.vue';
 import NotesList from '../components/notes/notes-list.vue';
-// import NotesCategory from '../components/notes/notes-category.vue';
+import NotesCategory from '../components/notes/notes-category.vue';
 import ConfirmationModal from '../components/common/confirmation-modal.vue';
 import { ref, type Ref } from 'vue';
 
