@@ -1,6 +1,6 @@
 <template>
   <section class="mt-8">
-    <notes-category />
+    <notes-category @create="showCreateCategoryModal = true" />
     <notes-create v-show="notesStore.isCreating" />
     <notes-update
       v-if="notesStore.isEditing && noteUpdate?.id"
@@ -16,6 +16,7 @@
       :show="showConfirmation"
       @action="action"
     />
+    <category-modal v-model:show="showCreateCategoryModal" />
   </section>
 </template>
 
@@ -26,11 +27,13 @@ import NotesUpdate from '../components/notes/notes-update.vue';
 import NotesList from '../components/notes/notes-list.vue';
 import NotesCategory from '../components/notes/notes-category.vue';
 import ConfirmationModal from '../components/common/confirmation-modal.vue';
+import CategoryModal from '../components/notes/category-modal.vue';
 import { ref, type Ref } from 'vue';
 
 const notesStore = useNotesStore();
 const noteUpdate = ref<Note>() as Ref<Note>;
 const showConfirmation = ref<boolean>(false);
+const showCreateCategoryModal = ref<boolean>(false);
 const noteId = ref<string>('');
 
 const handleUpdate = (note: Note) => {
