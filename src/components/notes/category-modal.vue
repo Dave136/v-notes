@@ -2,6 +2,7 @@
   <basic-modal :show="showModal">
     <h3 class="mb-4">New category</h3>
     <input
+      v-model="name"
       class="form-input block mb-4 bg-transparent rounded-md"
       type="text"
       placeholder="Unnamed category"
@@ -24,8 +25,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import BasicModal from '../common/basic-modal.vue';
+import { useCategoryStore } from '@/store';
+
 interface Props {
   show: boolean;
 }
@@ -35,12 +38,19 @@ const emit = defineEmits<{
   (e: 'update:show', value: boolean): void;
 }>();
 
+const name = ref<string>('');
+const category = useCategoryStore();
+
 const showModal = computed({
   get: () => props.show,
   set: (value: boolean) => emit('update:show', value),
 });
 
 const createCategory = () => {
-  console.log('creating a new category');
+  if (!name.value.length) return;
+
+  category.create(name.value);
+  showModal.value = false;
+  name.value = '';
 };
 </script>
